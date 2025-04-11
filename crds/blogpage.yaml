@@ -1,0 +1,40 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: blogpages.alpha.bloggernetes.davies.me.uk
+spec:
+  group: alpha.bloggernetes.davies.me.uk
+  names:
+    kind: BlogPage
+    plural: blogpages
+    singular: blogpage
+    shortNames:
+      - bpg
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: ["spec"]
+          properties:
+            spec:
+              type: object
+              required: ["id", "title", "content", "order"]
+              properties:
+                id:
+                  type: string
+                  description: "The unique identifier for the blog page (lowercase hyphens)"
+                  pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+                title:
+                  type: string
+                  description: "The title of the blog page"
+                  maxLength: 50
+                content:
+                  type: string
+                  description: "The content of the blog page"
+                order:
+                  type: integer
+                  description: "The display order in navigation (should be unique across all blog pages)"

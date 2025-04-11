@@ -1,0 +1,14 @@
+{{ define "content" }}
+<div>
+    <article class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">{{ .Page.Title }}</h1>
+            
+            <div id="content" class="prose max-w-none"></div>
+            <script>
+                document.getElementById('content').innerHTML = marked.parse(`{{ .Page.Content }}`);
+            </script>
+        </div>
+    </article>
+</div>
+{{ end }}

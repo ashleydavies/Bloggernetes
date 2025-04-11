@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - {{ .BlogName }}</title>
+    <meta name="description" content="{{ if .Post }}{{ .Post.MetaDescription }}{{ else }}A Kubernetes-native blog platform{{ end }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        /* Additional custom styles can go here */
+        .prose img {
+            margin: 1.5em 0;
+        }
+        .prose pre {
+            background-color: #f3f4f6;
+            padding: 1em;
+            border-radius: 0.375em;
+            overflow-x: auto;
+        }
+        .prose a {
+            color: #4f46e5;
+            text-decoration: underline;
+        }
+        .prose a:hover {
+            color: #4338ca;
+        }
+        .prose p {
+            margin-bottom: 1em;
+        }
+        .heart-container .heart {
+            display: inline;
+        }
+        .heart-container .frog {
+            display: none;
+        }
+        .heart-container:hover .heart {
+            display: none;
+        }
+        .heart-container:hover .frog {
+            display: inline;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/" class="text-2xl font-bold text-indigo-600">{{ .BlogName }}</a>
+                    </div>
+                    <!-- Navigation -->
+                    {{ if .Pages }}
+                    <nav class="ml-6 flex items-center space-x-4">
+                        {{ range .Pages }}
+                            <a href="/page/{{ .ID }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium {{ if eq $.PageID .ID }}text-indigo-600 font-semibold{{ end }}">{{ .Title }}</a>
+                        {{ end }}
+                    </nav>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Main content -->
+            <div class="md:w-3/4">
+                {{ template "content" . }}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="md:w-1/4">
+                <div class="bg-white shadow rounded-lg p-6 mb-6">
+                    <h2 class="text-lg font-semibold mb-4">Tags</h2>
+                    <div class="flex flex-wrap gap-2">
+                        {{ range .Tags }}
+                            <a href="/tag/{{ . }}" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm {{ if eq $.Tag . }}bg-indigo-100 text-indigo-800{{ end }}">{{ . }}</a>
+                        {{ end }}
+                    </div>
+                </div>
+
+                {{ if gt (len .Authors) 1 }}
+                <div class="bg-white shadow rounded-lg p-6">
+                    <h2 class="text-lg font-semibold mb-4">Authors</h2>
+                    <ul class="space-y-2">
+                        {{ range .Authors }}
+                            <li>
+                                <a href="/author/{{ . }}" class="text-gray-700 hover:text-indigo-600 {{ if eq $.Author . }}text-indigo-600 font-medium{{ end }}">{{ . }}</a>
+                            </li>
+                        {{ end }}
+                    </ul>
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-center items-center space-x-4 text-gray-500">
+                <p><a href="https://github.com/ashleydavies/bloggernetes" class="hover:text-indigo-600">Powered by Bloggernetes, the Kubernetes-native blogging platform</a> · <a href="/rss.xml" class="hover:text-indigo-600">RSS Feed</a> · Made with <span class="heart-container"><span class="heart">♡</span><span class="frog">🐸</span></span></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{{ define "content" }}
+<div>
+    <div class="mb-8">
+        <a href="/" class="text-indigo-600 hover:text-indigo-800">← Back to all posts</a>
+    </div>
+
+    <article class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ .Post.Title }}</h1>
+
+            <div class="flex items-center text-sm text-gray-500 mb-6">
+                <span>{{ .Post.AuthoredDate.Format "January 2, 2006" }}</span>
+                <span class="mx-2">•</span>
+                <span>By <a href="/author/{{ .Post.Author }}" class="text-indigo-600 hover:text-indigo-800">{{ .Post.Author }}</a></span>
+                {{ if .Post.UpdatedDate }}
+                    <span class="mx-2">•</span>
+                    <span>Updated {{ .Post.UpdatedDate.Format "January 2, 2006" }}</span>
+                {{ end }}
+            </div>
+
+            <div id="content" class="prose max-w-none"></div>
+            <script>
+                document.getElementById('content').innerHTML = marked.parse(`{{ .Post.Body }}`);
+            </script>
+
+            {{ if .Post.Tags }}
+                <div class="flex flex-wrap gap-2 mt-6">
+                    {{ range .Post.Tags }}
+                        <a href="/tag/{{ . }}" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm">{{ . }}</a>
+                    {{ end }}
+                </div>
+            {{ end }}
+        </div>
+    </article>
+
+    <div class="mt-10">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">More from this author</h2>
+
+        {{ $author := .Post.Author }}
+        {{ $currentID := .Post.ID }}
+        {{ $relatedPosts := 0 }}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{ range .Posts }}
+                {{ if and (eq .Author $author) (ne .ID $currentID) }}
+                    {{ if lt $relatedPosts 4 }}
+                        <div class="bg-white shadow rounded-lg p-4">
+                            <h3 class="font-semibold text-lg mb-2">
+                                <a href="/post/{{ .ID }}" class="hover:text-indigo-600">{{ .Title }}</a>
+                            </h3>
+                            <div class="text-sm text-gray-500">
+                                {{ .AuthoredDate.Format "January 2, 2006" }}
+                            </div>
+                        </div>
+                        {{ $relatedPosts = 1 }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        </div>
+
+        {{ if eq $relatedPosts 0 }}
+            <p class="text-gray-600">No other posts by this author.</p>
+        {{ end }}
+    </div>
+</div>
+{{ end }}

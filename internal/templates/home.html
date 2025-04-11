@@ -1,0 +1,47 @@
+{{ define "content" }}
+<div>
+    {{ if .Posts }}
+        <div class="space-y-10">
+            {{ range .Posts }}
+                <article class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span>{{ .AuthoredDate.Format "January 2, 2006" }}</span>
+                            <span class="mx-2">•</span>
+                            <span>By <a href="/author/{{ .Author }}" class="text-indigo-600 hover:text-indigo-800">{{ .Author }}</a></span>
+                        </div>
+
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                            <a href="/post/{{ .ID }}" class="hover:text-indigo-600">{{ .Title }}</a>
+                        </h2>
+
+                        {{ if .MetaDescription }}
+                            <p class="text-gray-600 mb-4">{{ .MetaDescription }}</p>
+                        {{ else }}
+                            <p class="text-gray-600 mb-4">{{ if gt (len .Body) 200 }}{{ slice .Body 0 200 }}...{{ else }}{{ .Body }}{{ end }}</p>
+                        {{ end }}
+
+                        {{ if .Tags }}
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                {{ range .Tags }}
+                                    <a href="/tag/{{ . }}" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm">{{ . }}</a>
+                                {{ end }}
+                            </div>
+                        {{ end }}
+
+                        <div class="mt-4">
+                            <a href="/post/{{ .ID }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                                Read more →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {{ end }}
+        </div>
+    {{ else }}
+        <div class="bg-white shadow rounded-lg p-6 text-center">
+            <p class="text-gray-600">No blog posts found.</p>
+        </div>
+    {{ end }}
+</div>
+{{ end }}

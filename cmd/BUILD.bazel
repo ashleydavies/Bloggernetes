@@ -1,0 +1,22 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "cmd_lib",
+    srcs = ["bloggernetes.go"],
+    importpath = "github.com/ashleydavies/bloggernetes/cmd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//internal",
+        "@com_github_charmbracelet_log//:log",
+        "@io_k8s_client_go//dynamic",
+        "@io_k8s_client_go//rest",
+        "@io_k8s_client_go//tools/clientcmd",
+        "@io_k8s_client_go//util/homedir",
+    ],
+)
+
+go_binary(
+    name = "cmd",
+    embed = [":cmd_lib"],
+    visibility = ["//visibility:public"],
+)

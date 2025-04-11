@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "internal",
+    srcs = [
+        "controller.go",
+        "page.go",
+        "post.go",
+        "server.go",
+        "store.go",
+    ],
+    embedsrcs = [
+        "templates/author.html",
+        "templates/home.html",
+        "templates/layout.html",
+        "templates/post.html",
+        "templates/tag.html",
+        "templates/page.html",
+    ],
+    importpath = "github.com/ashleydavies/bloggernetes/internal",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@com_github_charmbracelet_log//:log",
+        "@io_k8s_apimachinery//pkg/apis/meta/v1/unstructured",
+        "@io_k8s_apimachinery//pkg/runtime/schema",
+        "@io_k8s_client_go//dynamic",
+        "@io_k8s_client_go//dynamic/dynamicinformer",
+        "@io_k8s_client_go//tools/cache",
+    ],
+)

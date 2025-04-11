@@ -1,0 +1,58 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: blogposts.alpha.bloggernetes.davies.me.uk
+spec:
+  group: alpha.bloggernetes.davies.me.uk
+  names:
+    kind: BlogPost
+    plural: blogposts
+    singular: blogpost
+    shortNames:
+      - bp
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: ["spec"]
+          properties:
+            spec:
+              type: object
+              required: ["id", "title", "body", "author", "authoredDate"]
+              properties:
+                id:
+                  type: string
+                  description: "The unique identifier for the blog post"
+                  pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+                title:
+                  type: string
+                  description: "The title of the blog post"
+                  maxLength: 250
+                body:
+                  type: string
+                  description: "The content of the blog post"
+                author:
+                  type: string
+                  description: "The email of the author"
+                  pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                metaDescription:
+                  type: string
+                  description: "Meta description for SEO purposes"
+                  maxLength: 1000
+                tags:
+                  type: array
+                  description: "Optional list of tags for the blog post"
+                  items:
+                    type: string
+                authoredDate:
+                  type: string
+                  format: date-time
+                  description: "The date when the blog post was originally created"
+                updatedDate:
+                  type: string
+                  format: date-time
+                  description: "The date when the blog post was last modified"
