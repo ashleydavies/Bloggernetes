@@ -35,7 +35,6 @@ I'd like to add the following features in the future:
 * Localization support.
 
 More meta features:
-* Create a Helm chart for easy deployment.
 * CI/CD pipeline for building and deploying artifacts.
 * Unit tests for the controller and store.
 
