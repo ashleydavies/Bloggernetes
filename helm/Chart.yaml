@@ -1,0 +1,14 @@
+apiVersion: v2
+name: bloggernetes
+description: A Helm chart for Bloggernetes - A Kubernetes-native blogging platform
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - blog
+  - kubernetes
+  - bloggernetes
+home: https://github.com/ashleydavies/bloggernetes
+maintainers:
+  - name: Ashley Davies
+    url: https://github.com/ashleydavies

@@ -39,7 +39,7 @@ pkg_tar(
 oci_image(
     name = "image",
     base = "@distroless_base",
-    entrypoint = ["/app/cmd"],
+    entrypoint = ["/app/cmd_/cmd"],
     # Set environment variables if needed
     env = {
         "PORT": "8080",
@@ -60,4 +60,5 @@ oci_push(
     image = ":image",
     repository = "ghcr.io/ashleydavies/bloggernetes",
     # Use --tag=latest to specify the tag when pushing
+    # Remember to set --platforms=@rules_go//go/toolchain:linux_amd64 since we typically build for linux/amd64
 )

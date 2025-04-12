@@ -35,7 +35,6 @@ I'd like to add the following features in the future:
 * Localization support.
 
 More meta features:
-* Create a Helm chart for easy deployment.
 * CI/CD pipeline for building and deploying artifacts.
 * Unit tests for the controller and store.
 
@@ -92,10 +91,10 @@ When running in a Kubernetes cluster, the application will automatically use the
 
 ### Building and Using the Docker Image
 
-To push the image to a Docker registry:
+To push the image to a Docker registry, assuming you want a linux/amd64 image, you can use the following command:
 
 ```
-bazel run //cmd:push_image --tag=latest
+bazel run --platforms=@rules_go//go/toolchain:linux_amd64 //cmd:push_image --tag=latest
 ```
 
 You can also specify a different repository by setting the `repository` attribute in the `oci_push` rule in `cmd/BUILD.bazel`.
