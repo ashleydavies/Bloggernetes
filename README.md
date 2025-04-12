@@ -183,7 +183,3 @@ http://localhost:8080/rss.xml
 ```
 
 You can use this URL in any RSS reader to subscribe to the blog.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
