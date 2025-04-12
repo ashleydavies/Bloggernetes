@@ -1,4 +1,6 @@
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
 
 go_library(
     name = "cmd_lib",
@@ -18,5 +20,44 @@ go_library(
 go_binary(
     name = "cmd",
     embed = [":cmd_lib"],
+    # Build a pure Go binary with no CGO dependencies
+    pure = "on",
+    static = "on",
     visibility = ["//visibility:public"],
+)
+
+# Package the binary into a tarball
+pkg_tar(
+    name = "tar",
+    srcs = [":cmd"],
+    # Rename the binary to "bloggernetes" in the container
+    package_dir = "/app",
+    strip_prefix = ".",
+)
+
+# Create the container image
+oci_image(
+    name = "image",
+    base = "@distroless_base",
+    entrypoint = ["/app/cmd"],
+    # Set environment variables if needed
+    env = {
+        "PORT": "8080",
+    },
+    # Set labels for the image
+    labels = {
+        "org.opencontainers.image.source": "https://github.com/ashleydavies/bloggernetes",
+        "org.opencontainers.image.description": "Bloggernetes - A Kubernetes-native blogging platform",
+    },
+    tars = [":tar"],
+    # Set the working directory
+    workdir = "/app",
+)
+
+# Rule to push the image to a registry
+oci_push(
+    name = "push_image",
+    image = ":image",
+    repository = "ghcr.io/ashleydavies/bloggernetes",
+    # Use --tag=latest to specify the tag when pushing
 )

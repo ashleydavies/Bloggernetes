@@ -90,6 +90,16 @@ bazel run //cmd -- --namespace=default --context=my-context
 
 When running in a Kubernetes cluster, the application will automatically use the pod's service account.
 
+### Building and Using the Docker Image
+
+To push the image to a Docker registry:
+
+```
+bazel run //cmd:push_image --tag=latest
+```
+
+You can also specify a different repository by setting the `repository` attribute in the `oci_push` rule in `cmd/BUILD.bazel`.
+
 ## Command Line Flags
 
 - `--namespace`: Namespace to watch for BlogPost and BlogPage resources (default: "default")
